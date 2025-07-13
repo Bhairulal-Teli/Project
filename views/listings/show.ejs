@@ -1,0 +1,55 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="offset-3">
+    <h3><%= listing.title %></h3>
+    </div>
+    <div class="card listing-card col row offset-3">
+        <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="Listing" style="height:20rem">
+        <div class="card-body">
+        Owned By :<i> <%= listing.owner.username %></i>
+        <p class="card-text">
+            &#8377;<%= listing.price.toLocaleString("en-IN") %>/Night
+        </p>
+        <%= listing.description %><br>
+        <%= listing.location %><br>
+        <%= listing.country %>
+        </div>
+    </div>
+    <br>
+
+    <div class="buttons-show">
+        <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+        <a class="btn btn-dark btn-01" href="/listings/<%=listing._id%>/edit">Edit this Listing</a><br><br>
+        <form class="form-show" method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+            <button class="btn btn-danger btn-02">Delete</button>
+        </form>
+        <% } %>
+        <% if(currUser) { %>
+        <a class="btn btn-dark btn-01" href="/listings/<%=listing._id%>/review">Add comment</a>
+        <% } %>
+        <br>
+        
+    </div>
+    <div class="offset-2 manipulate">
+        <hr>
+        <div class="row">
+            <p><b>All Reviews</b></p>
+            <%for(let i = 0;i<data.length;i++) {%>
+                <div class="card col-5 mt-3 mb-3 ms-3">
+                    <div class="card-body">
+                      <h5 class="card-title">@<%=minreview[i].username %></h5>
+                      <p class="card-text"><%=data[i].comment%>.</p>
+                      <p class="starability-result card-text" data-rating="<%=data[i].rating%>"></p>
+                    </div>
+                    <form method="POST" action="/listings/<%=listing._id%>/review/<%=listing.reviews[i]%>?_method=DELETE">
+                        <button class="btn btn-sm btn-dark mb-2 hidbtn">delete</button>
+                    </form>
+                </div>
+            <% } %>
+        </div>
+        <br>
+        <button class="btn btn-dark mybutn" onclick="myfunc()">Delete review</button>
+    </div>
+    
+</body>
+
